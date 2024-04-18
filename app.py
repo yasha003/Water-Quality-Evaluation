@@ -3,14 +3,14 @@ from flask import Flask, request, render_template
 import pickle
 
 app = Flask(__name__)
+app.static_folder = 'static'  # Specify the static folder
+
 
 model = pickle.load(open('models/model_rfc.pkl', 'rb'))
-
 
 @app.route('/')
 def home():
     return render_template('index.html')
-
 
 @app.route("/predict", methods=['POST'])
 def predict():
@@ -20,7 +20,6 @@ def predict():
 
     output = round(prediction[0], 2)
     return render_template('index.html', prediction_text='Quality of Water is {}'.format(output))
-
 
 if __name__ == "__main__":
     app.run()
